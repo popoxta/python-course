@@ -1,4 +1,4 @@
-from prompt import prompt
+from utils.prompt import prompt
 
 
 def main():

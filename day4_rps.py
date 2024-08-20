@@ -1,6 +1,5 @@
 import random
-
-from prompt import prompt
+from utils.prompt import prompt
 
 OPPONENT_NAME = 'COMPUTER'
 CHOICES = ['rock', 'paper', 'scissors']
