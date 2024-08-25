@@ -7,8 +7,8 @@ ALPHABET_LENGTH = len(ALPHABET)
 
 
 def cipher(message, shift, shift_forwards):
-    return [ALPHABET[(ALPHABET.index(val) + shift) % ALPHABET_LENGTH] if shift_forwards else
-            ALPHABET[(ALPHABET.index(val) - shift) % ALPHABET_LENGTH] for val in message.lower()]
+    return [ALPHABET[(ALPHABET.index(val) + shift if shift_forwards else ALPHABET.index(val) - shift) % ALPHABET_LENGTH]
+            for val in message.lower()]
 
 
 def get_text_input():
