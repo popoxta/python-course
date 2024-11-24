@@ -1,28 +1,11 @@
-from utils.prompt import prompt
 from utils.input import get_numeric_input
-
-
-def multiply(a, b):
-    return a * b
-
-
-def add(a, b):
-    return a + b
-
-
-def subtract(a, b):
-    return a - b
-
-
-def divide(a, b):
-    return a / b
-
+from utils.prompt import prompt
 
 operations = {
-    'multiply': multiply,
-    'add': add,
-    'subtract': subtract,
-    'divide': divide
+    'multiply': lambda a, b: a * b,
+    'add': lambda a, b: a + b,
+    'subtract': lambda a, b: a - b,
+    'divide': lambda a, b: a / b
 }
 
 
