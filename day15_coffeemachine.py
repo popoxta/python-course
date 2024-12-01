@@ -1,44 +1,5 @@
-# Coffee Machine
-#
-# Starting resources
-#   300ml water
-#   200ml milk
-#   100g coffee
-#
-# Coins
-#    Penny (1 cent)
-#    Nickel (5 cent)
-#   Dime (10 cent)
-#   Quarter (25 cent)
-#
-# Coffee Types:
-#
-# Espresso
-#   50ml water
-#   18g coffee
-#   $1.50
-#
-# Latte
-#   200ml water
-#   18g coffee
-#   150ml milk
-#   $2.50
-#
-# Cappuccino
-#   250ml water
-#   24g coffee
-#   100ml milk
-#   $3.50
-#
-# Program Requirements
-#   Print a report (status - coins, resources) on 'report' prompt
-#   Turn off machine with 'off' prompt
-#   Check resources sufficient for order
-#   If insufficient resources or money, return money to user
-#   Input money (penny, nickel, dime, quarters...)
-#   Calculate change based on cost of drink
-#   Deduct resources when making drink
-from typing import TypedDict, List
+from typing import TypedDict
+
 from utils.input import get_numeric_input
 from utils.prompt import prompt
 
