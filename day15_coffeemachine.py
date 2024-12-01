@@ -136,6 +136,11 @@ def process_coin_input(item_cost: int):
     }
 
 
+def update_machine_balance(machine: CoffeeMachine, balance_addition: int):
+    machine['balance'] += balance_addition
+    return machine
+
+
 def get_order_item_details(order_item: str):
     return COFFEE_TYPES[order_item]
 
@@ -151,3 +156,9 @@ def check_resources_sufficient(resources_required: Resources, machine: CoffeeMac
             print(f'Not enough {key} in the machine! Requires {value}, has {machine_balance}...')
             return False
     return True
+
+
+def update_machine_resources(resources_removed: Resources, machine: CoffeeMachine):
+    for key, value in resources_removed:
+        machine['resources'][key] -= value  # type: ignore
+    return machine
