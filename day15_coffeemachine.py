@@ -154,7 +154,7 @@ def run_coffee_machine():
         drink_name = machine_input.lower()
         order_details = get_order_item_details(drink_name)
         coffee_resources_required = order_details['resources']
-        order_cost = get_order_item_details(drink_name)['cost']
+        order_cost = order_details['cost']
 
         does_machine_have_enough_resource_for_order = (
             check_resources_sufficient(coffee_resources_required, coffee_machine))
