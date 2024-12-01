@@ -38,12 +38,12 @@
 #   Input money (penny, nickel, dime, quarters...)
 #   Calculate change based on cost of drink
 #   Deduct resources when making drink
-from typing import TypedDict
+from typing import TypedDict, List
 from utils.input import get_numeric_input
 from utils.prompt import prompt
 
 
-class MachineResources(TypedDict):
+class Resources(TypedDict):
     water: int
     milk: int
     coffee: int
@@ -51,7 +51,7 @@ class MachineResources(TypedDict):
 
 class CoffeeMachine(TypedDict):
     balance: int
-    resources: MachineResources
+    resources: Resources
 
 
 COIN_VALUES = {
@@ -136,6 +136,18 @@ def process_coin_input(item_cost: int):
     }
 
 
-print_report(get_new_machine())
+def get_order_item_details(order_item: str):
+    return COFFEE_TYPES[order_item]
 
-process_coin_input(1000)
+
+def get_order_resources(order_item: str) -> Resources:
+    return get_order_item_details(order_item)['resources']
+
+
+def check_resources_sufficient(resources_required: Resources, machine: CoffeeMachine):
+    for key, value in resources_required.items():
+        machine_balance = machine['resources'][key]  # type: ignore
+        if not machine_balance >= value:
+            print(f'Not enough {key} in the machine! Requires {value}, has {machine_balance}...')
+            return False
+    return True
