@@ -39,6 +39,8 @@
 #   Calculate change based on cost of drink
 #   Deduct resources when making drink
 from typing import TypedDict
+from utils.input import get_numeric_input
+from utils.prompt import prompt
 
 
 class MachineResources(TypedDict):
@@ -109,4 +111,31 @@ def print_report(machine: CoffeeMachine):
         print(f'{key.title()}: {value}ml')
 
 
+def get_machine_input():
+    return prompt(name='input', message='Choose a menu option',
+                  choices=[x.title() for x in COFFEE_TYPES.keys()] + ['Turn Off Machine', 'Print Resources'])
+
+
+def process_coin_input(item_cost: int):
+    coin_input = {e: get_numeric_input(f'How many {e}s?\n') * COIN_VALUES[e] for e in COIN_VALUES.keys()}
+    total_coin_value = sum(coin_input.values())
+
+    difference_between_cost_and_input = item_cost - total_coin_value
+    is_input_sufficient = difference_between_cost_and_input < 0
+
+    if difference_between_cost_and_input > 0:
+        print(f'Not enough money! You are short ${convert_cents_to_dollars(item_cost - total_coin_value)}!')
+        print(f'Returning ${convert_cents_to_dollars(total_coin_value)}...')
+        total_coin_value = 0
+    elif is_input_sufficient:
+        print(f'You paid too much, returning ${convert_cents_to_dollars(abs(difference_between_cost_and_input))}...')
+        total_coin_value = item_cost
+    return {
+        'is_transaction_success': is_input_sufficient,
+        'balance': total_coin_value
+    }
+
+
 print_report(get_new_machine())
+
+process_coin_input(1000)
