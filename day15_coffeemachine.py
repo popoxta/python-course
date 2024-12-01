@@ -143,7 +143,8 @@ def run_coffee_machine():
         machine_input = get_machine_input()
         if machine_input == 'Turn Off Machine':
             print('Goodbye!')
-            return
+            is_machine_running = False
+            continue
         elif machine_input == 'Print Resources':
             print_report(coffee_machine)
             continue
