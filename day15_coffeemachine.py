@@ -109,9 +109,10 @@ def print_report(machine: CoffeeMachine):
     resources = machine['resources']
     for key, value in resources.items():
         print(f'{key.title()}: {value}ml')
+    print('\n')
 
 
-def get_machine_input():
+def get_machine_input() -> str:
     return prompt(name='input', message='Choose a menu option',
                   choices=[x.title() for x in COFFEE_TYPES.keys()] + ['Turn Off Machine', 'Print Resources'])
 
@@ -149,6 +150,10 @@ def get_order_resources(order_item: str) -> Resources:
     return get_order_item_details(order_item)['resources']
 
 
+def print_order_cost(order_cost: int, drink_name: str):
+    print(f'That\'ll be ${convert_cents_to_dollars(order_cost)} for the {drink_name}!\n')
+
+
 def check_resources_sufficient(resources_required: Resources, machine: CoffeeMachine):
     for key, value in resources_required.items():
         machine_balance = machine['resources'][key]  # type: ignore
@@ -159,6 +164,52 @@ def check_resources_sufficient(resources_required: Resources, machine: CoffeeMac
 
 
 def update_machine_resources(resources_removed: Resources, machine: CoffeeMachine):
-    for key, value in resources_removed:
+    for key, value in resources_removed.items():
         machine['resources'][key] -= value  # type: ignore
     return machine
+
+
+def brew_drink(drink_name: str):
+    print(f'Brewing you a nice hot {drink_name}...')
+    print('Enjoy!')
+
+
+def run_coffee_machine():
+    coffee_machine = get_new_machine()
+    is_machine_running = True
+
+    while is_machine_running:
+        machine_input = get_machine_input()
+        if machine_input == 'Turn Off Machine':
+            print('Goodbye!')
+            return
+        elif machine_input == 'Print Resources':
+            print_report(coffee_machine)
+            continue
+
+        drink_name = machine_input.lower()
+        order_details = get_order_item_details(drink_name)
+        coffee_resources_required = order_details['resources']
+        order_cost = get_order_item_details(drink_name)['cost']
+
+        does_machine_have_enough_resource_for_order = (
+            check_resources_sufficient(coffee_resources_required, coffee_machine))
+        if not does_machine_have_enough_resource_for_order:
+            continue
+
+        print_order_cost(order_cost, drink_name)
+        is_transaction_success, balance = process_coin_input(order_cost).values()
+        if not is_transaction_success:
+            continue
+
+        coffee_machine = update_machine_balance(coffee_machine, balance)
+        coffee_machine = update_machine_resources(coffee_resources_required, coffee_machine)
+        brew_drink(drink_name)
+
+
+def main():
+    run_coffee_machine()
+
+
+if __name__ == '__main__':
+    main()
